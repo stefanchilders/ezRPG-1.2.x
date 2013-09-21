@@ -21,6 +21,7 @@ class Module_Register extends Base_Module
 
     public function start()
     {
+    
         if ( LOGGED_IN )
         {
             header("Location: index.php");
@@ -76,24 +77,24 @@ class Module_Register extends Base_Module
         $result = $this->db->fetchRow('SELECT COUNT(`id`) AS `count` FROM `<ezrpg>players` WHERE `username`=?', array( $_POST['username'] ));
         if ( empty($_POST['username']) )
         {
-            $errors[] = 'You didn\'t enter your username!';
+            $errors[] = $_SESSION['You_didn_t_enter_your_username'];
             $error = 1;
         }
         else if ( !isUsername($_POST['username']) )
         { //If username is too short...
-            $errors[] = 'Your username must be between 3 and 16 characters and may only contain alphanumerical characters!'; //Add to error message
+            $errors[] = $_SESSION['Your_username_must_be_between_3_and_16_characters_and_may_only_contain_alphanumerical_characters']; //Add to error message
             $error = 1; //Set error check
         }
         else if ( $result->count > 0 )
         {
-            $errors[] = 'That username has already been used. Please create only one account!';
+            $errors[] = $_SESSION['That_username_has_already_been_used_Please_create_only one_account'];
             $error = 1; //Set error check
         }
 
         //Check password
         if ( empty($_POST['password']) )
         {
-            $errors[] = 'You didn\'t enter a password!';
+            $errors[] = $_SESSION['You_didn_t_enter_a_password'];
             $error = 1;
         }
         else if ( !isPassword($_POST['password']) )
@@ -103,17 +104,17 @@ class Module_Register extends Base_Module
 			{
 				$lenmsg = $length . ' and ' . $settings->setting['validation']['passLenMax']['value'];
 				$length .= ','. $settings->setting['validation']['passLenMax']['value'];
-				$errors[] = 'Your password must be between ' . $lenmsg . ' characters!'; //Add to error message
+				$errors[] = $_SESSION['Your_password_must_be_between'] . $lenmsg . $_SESSION['characters']; //Add to error message
 			}else
 			{
-				$errors[] = 'Your password must be longer than ' . $length . ' characters!'; //Add to error message
+				$errors[] = $_SESSION['Your_password_must_be_longer_than'] . $length . $_SESSION['characters']; //Add to error message
             }
 			$error = 1; //Set error check
         }
 
         if ( $_POST['password2'] != $_POST['password'] )
         {
-            $errors[] = 'You didn\'t verify your password correctly!';
+            $errors[] = $_SESSION['You_didn_t_verify_your_password_correctly'];
             $error = 1;
         }
 
@@ -121,42 +122,42 @@ class Module_Register extends Base_Module
         $result = $this->db->fetchRow('SELECT COUNT(`id`) AS `count` FROM `<ezrpg>players` WHERE `email`=?', array( $_POST['email'] ));
         if ( empty($_POST['email']) )
         {
-            $errors[] = 'You didn\'t enter your email!';
+            $errors[] = $_SESSION['You_didn_t_enter_your_email'];
             $error = 1;
         }
         else if ( !isEmail($_POST['email']) )
         {
-            $errors[] = 'Your email format is wrong!'; //Add to error message
+            $errors[] = $_SESSION['Your_email_format_is_wrong']; //Add to error message
             $error = 1; //Set error check
         }
         else if ( $result->count > 0 )
         {
-            $errors[] = 'That email has already been used. Please create only one account, creating more than one account will get all your accounts deleted!';
+            $errors[] = $_SESSION['That_email_has_already_been_used_Please_create_only_one_account_creating_more_than_one_account_will_get_all_your_accounts_deleted'];
             $error = 1; //Set error check
         }
 
         if ( $_POST['email2'] != $_POST['email'] )
         {
-            $errors[] = 'You didn\'t verify your email correctly!';
+            $errors[] = $_SESSION['You_didn_t_verify_your_email_correctly'];
             $error = 1;
         }
 
         //Check verification code
         if ( empty($_POST['reg_verify']) )
         {
-            $errors[] = 'You didn\'t enter the verification code!';
+            $errors[] = $_SESSION['You_didn_t_enter_the_verification_code'];
             $error = 1;
         }
         else if ( $_SESSION['verify_code'] != sha1(strtoupper($_POST['reg_verify']) . SECRET_KEY) )
         {
-            $errors[] = 'You didn\'t enter the correct verification code!';
+            $errors[] = $_SESSION['You_didn_t_enter_the_correct_verification_code'];
             $error = 1;
         }
 
         //verify_code must NOT be used again.
-        session_unset();
-        session_destroy();
-		session_start();
+          unset($_SESSION['verify_code']);
+          //session_destroy();
+		  //session_start();
 
 		
         if ( empty($errors) )
@@ -181,14 +182,14 @@ class Module_Register extends Base_Module
 
             $hooks->run_hooks('register_after', $new_player);
 
-            $msg = 'Congratulations, you have registered! Please login now to play!';
+            $msg = $_SESSION['Congratulations_you_have_registered_Please_login_now_to_play'];
             $this->setMessage($msg, 'GOOD');
             header('Location: index.php');
             exit;
         }
         else
         {
-            $msg = 'Sorry, there were some mistakes in your registration:';
+            $msg = $_SESSION['Sorry_there_were_some_mistakes_in_your_registration'];
             $this->setMessage($msg, 'FAIL');
             foreach ( $errors as $errmsg )
             {

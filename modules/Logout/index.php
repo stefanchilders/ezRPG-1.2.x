@@ -19,13 +19,13 @@ class Module_Logout extends Base_Module
     {
         unset($_SESSION['hash']);
         unset($_SESSION['userid']);
-        session_unset();
-        session_destroy();
+     //   session_unset();
+     //   session_destroy();
 
         global $hooks;
         $hooks->run_hooks('logout');
 
-        $this->setMessage('You have been logged out!');
+        $this->setMessage($_SESSION['You_have_been_logged_out']);
         header('Location: index.php');
         exit;
     }

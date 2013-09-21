@@ -72,10 +72,13 @@ function hook_check_session($db, &$tpl, $player, $args = 0)
             {
                 if ( !in_array($_GET['mod'], array( 'Logout' )) )
                 {
-                    session_destroy();
+                    unset($_SESSION['hash']);
+                    unset($_SESSION['userid']);
+                    unset($_SESSION['last_page']);
+                    //session_destroy();
 					session_start();
                     $_SESSION['last_page'] = $_SERVER['REQUEST_URI'];
-					$_SESSION['status_messages']['Session_Loggedout'] = array('INFO' => 'You have been logged out due to inactivity!');
+					$_SESSION['status_messages']['Session_Loggedout'] = array('INFO' => $_SESSION['You_have_been_logged_out_due_to_inactivity']);
 					header('location: index.php');
                     exit;
                 }

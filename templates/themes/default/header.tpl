@@ -8,6 +8,26 @@
 <meta name="Robots" content="index,follow" />
 <link rel="stylesheet" href="static/default/style.css" type="text/css" />	
 <title>ezRPG :: {$TITLE|default:""}</title>
+
+
+    <script language="javascript" type="text/javascript">
+    
+       window.setInterval("zeitanzeige()",1000);
+ 
+       function zeitanzeige()
+       {
+        d = new Date ();
+ 
+        h = (d.getHours () < 10 ? '0' + d.getHours () : d.getHours ());
+        m = (d.getMinutes () < 10 ? '0' + d.getMinutes () : d.getMinutes ());
+        s = (d.getSeconds () < 10 ? '0' + d.getSeconds () : d.getSeconds ());
+ 
+        document.getElementById("zeit").innerHTML =  
+        h + ':' + m + ':' + s ;
+       }
+    </script>
+
+
 </head>
 <body>
 
@@ -15,22 +35,22 @@
 
 <div id="header">
 	<span id="title">{$GAMESETTINGS['game_name']['value']}</span>
-	<span id="time">{$smarty.now|date_format:'%A %T'}
+	<span id="time">{$LANGUAGE_SYS_{$smarty.now|date_format:'%A'}}<span id="zeit"></span>
 	<br />
-	<strong>Players Online</strong>: {$ONLINE}</span>
+	<strong>{$LANGUAGE_SYS_Players_Online}</strong>: {$ONLINE}</span>
 </div>
 
 <div id="nav">
 	{if $LOGGED_IN == 'TRUE'}
 	<ul>
 	{foreach from=$TOP_MENU_UserMenu item=menu key=menukey} 
-	<li><a href={$menu}>{$menukey}</a></li>
+	<li><a href={$menu}>{$LANGUAGE_SYS_{$menukey}}</a></li>
 	{/foreach}
 	</ul>
 	{else}
 	<ul>
 	{foreach from=$TOP_MENU_LOGGEDOUT item=menu key=menukey} 
-	<li><a href={$menu}>{$menukey}</a></li>
+	<li><a href={$menu}>{$LANGUAGE_SYS_{$menukey}}</a></li>
 	{/foreach}
 	</ul>
 	{/if}
@@ -40,23 +60,23 @@
 
 {if $LOGGED_IN == 'TRUE'}
 <div id="sidebar">
-<strong>Level</strong>: {$player->level}<br />
-<strong>Gold</strong>: {$player->money}<br />
+<strong>{$LANGUAGE_SYS_Level}</strong>: {$player->level}<br />
+<strong>{$LANGUAGE_SYS_Gold}</strong>: {$player->money}<br />
 <div class="bar">
 	<div class="inner" style="width: {{$player->exp}/{$player->max_exp}*100}%"></div>
-	<div class="text">EXP: {$player->exp} / {$player->max_exp}</div>
+	<div class="text">{$LANGUAGE_SYS_EXP}: {$player->exp} / {$player->max_exp}</div>
 </div>
 <div class="bar">
 	<div class="inner" style="width: {{$player->hp}/{$player->max_hp}*100}%"></div>
-	<div class="text">HP: {$player->hp} / {$player->max_hp}</div>
+	<div class="text">{$LANGUAGE_SYS_HP}: {$player->hp} / {$player->max_hp}</div>
 </div>
 <div class="bar">
 	<div class="inner" style="width: {{$player->energy}/{$player->max_energy}*100}%"></div>
-	<div class="text">Energy: {$player->energy} / {$player->max_energy}</div>
+	<div class="text">{$LANGUAGE_SYS_Energy}: {$player->energy} / {$player->max_energy}</div>
 </div>
 
 {if $new_logs > 0}
-<a href="index.php?mod=EventLog" class="red"><strong>{$new_logs} New Log Events!</strong></a>
+<a href="index.php?mod=EventLog" class="red"><strong>{$new_logs} {$LANGUAGE_SYS_New_Log_Events}</strong></a>
 {/if}
 </div>
 {/if}

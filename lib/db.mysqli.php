@@ -74,7 +74,7 @@ class Db_mysqli
         $this->dbname = $dbname;
         $this->username = $username;
         $this->password = $password;
-        $this->prefix = (defined('DB_PREFIX') ? DB_PREFIX : 'ezrpg');;
+        $this->prefix = DB_PREFIX;
     }
 
     /*

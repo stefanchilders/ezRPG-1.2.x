@@ -6,7 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="Distribution" content="Global" />
 <meta name="Robots" content="index,follow" />
-<link rel="stylesheet" href="../static/default/style.css" type="text/css" />	
+
+{$THEME_NOW}	
+
 <title>{$GAMESETTINGS['game_name']['value']} :: {$TITLE|default:""}</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script>

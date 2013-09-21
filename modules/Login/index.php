@@ -25,7 +25,7 @@ class Module_Login extends Base_Module
         $error = 0;
         if ( empty($_POST['username']) || empty($_POST['password']) )
         {
-            $errors[] = 'Please enter your username and password!';
+            $errors[] = $_SESSION['Please_enter_your_username_and_password'];
             $error = 1;
         }
         else
@@ -33,7 +33,7 @@ class Module_Login extends Base_Module
             $player = $this->validate();
             if ( $player === false )
             {
-                $errors[] = 'Please check your username/password!';
+                $errors[] = $_SESSION['Please_check_your_username_password'];
                 $error = 1;
             }
         }
@@ -49,7 +49,7 @@ class Module_Login extends Base_Module
                     $check = checkPassword($player->secret_key, $_POST['password'], $player->password, $player->pass_method);
                     if ( $check != TRUE )
                     {
-                        $errors[] = 'Password Set as Old Method!';
+                        $errors[] = $_SESSION['Password_Set_as_Old_Method'];
                         $error = 1;
                     }
                     else
@@ -61,7 +61,7 @@ class Module_Login extends Base_Module
                 }
                 else
                 {
-                    $errors[] = 'Please check your username/password!';
+                    $errors[] = $_SESSION['Please_check_your_username_password'];
                     $error = 1;
                 }
             }

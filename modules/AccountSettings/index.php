@@ -24,8 +24,15 @@ class Module_AccountSettings extends Base_Module
         {
             $this->changePassword();
         }
+        elseif ( isset($_POST['change_language']) )
+        {
+            $this->changeLanguage();
+        }
         else
         {
+            $query = $this->db->execute('SELECT * FROM `<ezrpg>settings` WHERE `optionscode` =?', array( "language" ));
+            $language = $this->db->fetchAll($query);
+            $this->tpl->assign('language', $language);
             $this->loadView('account_settings.tpl', 'Account_Settings');
         }
     }
@@ -35,7 +42,7 @@ class Module_AccountSettings extends Base_Module
         $msg = '';
         if ( empty($_POST['current_password']) || empty($_POST['new_password']) || empty($_POST['new_password2']) )
         {
-            $msg = 'You forgot to fill in something!';
+            $msg = $_SESSION['You_forgot_to_fill_in_something'];
         }
         else
         {
@@ -44,25 +51,34 @@ class Module_AccountSettings extends Base_Module
             $check = checkPassword($player_check->secret_key, $_POST['current_password'], $player_check->password);
             if ( $check !== TRUE )
             {
-                $msg = 'The password you entered does not match this account\'s password.';
+                $msg = $_SESSION['The_password_you_entered_does_not_match_this_account_s_password'];
             }
             else if ( !isPassword($_POST['new_password']) )
             {
-                $msg = 'Your password must be longer than 3 characters!';
+                $msg = $_SESSION['Your_password_must_be_longer_than_3_characters'];
             }
             else if ( $_POST['new_password'] != $_POST['new_password2'] )
             {
-                $msg = 'You didn\'t confirm your new password correctly!';
+                $msg = $_SESSION['You_didn_t_confirm_your_new_password_correctly'];
             }
             else
             {
                 $new_password = createPassword($player_check->secret_key, $_POST['new_password']);
                 $this->db->execute('UPDATE `<ezrpg>players` SET `password`=? WHERE `id`=?', array( $new_password, $this->player->id ));
-                $msg = 'You have changed your password.';
+                $msg = $_SESSION['You_have_changed_your_password'];
             }
         }
         $this->setMessage($msg);
         header('Location: index.php?mod=AccountSettings');
+    }
+    
+    
+    private function changeLanguage()
+    {
+    $this->db->execute('UPDATE `<ezrpg>players` SET `language`=? WHERE `id`=?', array( $_POST['selection'], $this->player->id ));
+    $msg = $_SESSION['You_have_changed_your_language'];
+    $this->setMessage($msg);
+    header('Location: index.php?mod=AccountSettings');
     }
 
 }

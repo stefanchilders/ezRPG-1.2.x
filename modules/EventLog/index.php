@@ -47,7 +47,7 @@ class Module_EventLog extends Base_Module
     {
         $query = $this->db->execute('DELETE FROM `<ezrpg>player_log` WHERE `player`=?', array( $this->player->id ));
 
-        $msg = 'You have cleared your event log!';
+        $msg = $_SESSION['You_have_cleared_your_event_log'];
         $this->setMessage($msg);
         header('Location: index.php?mod=EventLog');
         exit;

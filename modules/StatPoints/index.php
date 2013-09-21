@@ -31,7 +31,7 @@ class Module_StatPoints extends Base_Module
         }
         else //No more stat points, redirect to player home page
         {
-            $msg = 'You don\'t have any stat points left!';
+            $msg = $_SESSION['You_don_t_have_any_stat_points_left'];
             $this->setMessage($msg, 'WARN');
             header('Location: index.php');
         }
@@ -55,7 +55,7 @@ class Module_StatPoints extends Base_Module
 				stat_points=stat_points-1,
 				strength=strength+1
 				WHERE pid=?', array( $this->player->id ));
-                $msg = 'You have increased your strength!';
+                $msg = $_SESSION['You_have_increased_your_strength'];
                 $this->setMessage($msg);
                 loadMetaCache(1);
                 break;
@@ -68,7 +68,7 @@ class Module_StatPoints extends Base_Module
 				max_hp=max_hp+5
 				WHERE pid=?', array( $this->player->id ));
 
-                $msg = 'You have increased your vitality!';
+                $msg = $_SESSION['You_have_increased_your_vitality'];
                 $this->setMessage($msg);
                 loadMetaCache(1);
                 break;
@@ -78,7 +78,7 @@ class Module_StatPoints extends Base_Module
 				agility=agility+1
 				WHERE pid=?', array( $this->player->id ));
 
-                $msg = 'You have increased your agility!';
+                $msg = $_SESSION['You_have_increased_your_agility'];
                 $this->setMessage($msg);
                 loadMetaCache(1);
                 break;
@@ -88,7 +88,7 @@ class Module_StatPoints extends Base_Module
 				dexterity=dexterity+1
 				WHERE pid=?', array( $this->player->id ));
 
-                $msg = 'You have increased your dexterity!';
+                $msg = $_SESSION['You_have_increased_your_dexterity'];
                 $this->setMessage($msg);
                 loadMetaCache(1);
                 break;
@@ -99,7 +99,7 @@ class Module_StatPoints extends Base_Module
         //Player has just used up their last stat point
         if ( $this->player->stat_points <= 1 )
         {
-            $this->setMessage('You have no more stat points!');
+            $this->setMessage($_SESSION['You_have_no_more_stat_points']);
             header('Location: index.php');
             exit;
         }

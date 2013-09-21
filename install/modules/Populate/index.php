@@ -29,17 +29,18 @@ class Install_Populate extends InstallerFactory
         }
 		
         $structure1 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `<ezrpg>players` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `username` varchar(30) default NULL,
-  `password` varchar(255) default NULL,
-  `email` varchar(255) default NULL,
-  `pass_method` tinyint(3) default NULL,
+CREATE TABLE IF NOT EXISTS `ezrpg_players` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `pass_method` tinyint(3) DEFAULT NULL,
   `secret_key` text,
-  `rank` smallint(5) unsigned NOT NULL default '1',
-  `registered` int(11) unsigned default NULL,
-  `force_cache` int(11) unsigned default '0',
-  PRIMARY KEY  (`id`),
+  `rank` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `registered` int(11) unsigned DEFAULT NULL,
+  `force_cache` int(11) unsigned DEFAULT '0',
+  `language` varchar(255) DEFAULT 'english',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -48,40 +49,40 @@ QUERY;
 
 
         $structure2 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `<ezrpg>players_meta` (
-  `id` int(11) unsigned NOT NULL auto_increment,
+CREATE TABLE IF NOT EXISTS `ezrpg_players_meta` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `pid` int(11) unsigned NOT NULL,
-  `last_active` int(11) unsigned default '0',
-  `last_login` int(11) unsigned default '0',
-  `money` int(11) unsigned default '100',
-  `level` int(11) unsigned default '1',
-  `stat_points` int(11) unsigned default '10',
-  `exp` int(11) unsigned default '0',
-  `max_exp` int(11) unsigned default '10',
-  `hp` int(11) unsigned default '20',
-  `max_hp` int(11) unsigned default '20',
-  `energy` int(11) unsigned NOT NULL default '10',
-  `max_energy` int(11) unsigned NOT NULL default '10',
-  `strength` int(11) unsigned default '5',
-  `vitality` int(11) unsigned default '5',
-  `agility` int(11) unsigned default '5',
-  `dexterity` int(11) unsigned default '5',
-  `damage` int(11) unsigned default '0',
-  `kills` int(11) unsigned NOT NULL default '0',
-  `deaths` int(11) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`)
+  `last_active` int(11) unsigned DEFAULT '0',
+  `last_login` int(11) unsigned DEFAULT '0',
+  `money` int(11) unsigned DEFAULT '100',
+  `level` int(11) unsigned DEFAULT '1',
+  `stat_points` int(11) unsigned DEFAULT '10',
+  `exp` int(11) unsigned DEFAULT '0',
+  `max_exp` int(11) unsigned DEFAULT '10',
+  `hp` int(11) unsigned DEFAULT '20',
+  `max_hp` int(11) unsigned DEFAULT '20',
+  `energy` int(11) unsigned NOT NULL DEFAULT '10',
+  `max_energy` int(11) unsigned NOT NULL DEFAULT '10',
+  `strength` int(11) unsigned DEFAULT '5',
+  `vitality` int(11) unsigned DEFAULT '5',
+  `agility` int(11) unsigned DEFAULT '5',
+  `dexterity` int(11) unsigned DEFAULT '5',
+  `damage` int(11) unsigned DEFAULT '0',
+  `kills` int(11) unsigned NOT NULL DEFAULT '0',
+  `deaths` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 QUERY;
         $db->execute($structure2);
 
         $structure3 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `<ezrpg>player_log` (
-  `id` int(11) unsigned NOT NULL auto_increment,
+CREATE TABLE IF NOT EXISTS `ezrpg_player_log` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `player` int(11) unsigned NOT NULL,
   `time` int(11) unsigned NOT NULL,
   `message` text NOT NULL,
-  `status` tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `player_log` (`player`,`time`),
   KEY `new_logs` (`player`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -89,16 +90,16 @@ QUERY;
         $db->execute($structure3);
 
         $structure4 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `<ezrpg>menu` (
+CREATE TABLE IF NOT EXISTS `ezrpg_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `active` int(11) NOT NULL,
+  `active` int(11) NOT NULL DEFAULT '1',
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `module_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `AltTitle` varchar(255) DEFAULT NULL,
-  `uri` varchar(255) NOT NULL,
-  `pos` int(11) NOT NULL,
+  `uri` varchar(255) DEFAULT NULL,
+  `pos` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 QUERY;
@@ -106,11 +107,11 @@ QUERY;
 
      
         $structure5 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `<ezrpg>settings` (
+CREATE TABLE IF NOT EXISTS `ezrpg_settings` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(120) NOT NULL,
   `title` varchar(120) NOT NULL,
-  `description` text NULL DEFAULT NULL,
+  `description` text,
   `optionscode` text,
   `value` text,
   `disporder` smallint(5) NOT NULL DEFAULT '0',
@@ -124,11 +125,11 @@ QUERY;
         $db->execute($structure5);
 
         $structure6 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `<ezrpg>themes` (
+CREATE TABLE IF NOT EXISTS `ezrpg_themes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   `dir` text NOT NULL,
-  `enabled` int(11) NOT NULL,
+  `enabled` int(11) NOT NULL DEFAULT '0',
   `type` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -139,7 +140,7 @@ QUERY;
         $data1 = <<<QUERY
 INSERT INTO `<ezrpg>settings` (`id`, `name`, `title`, `description`, `optionscode`, `value`, `disporder`, `gid`, `isdefault`,`visible`) VALUES
 (1, 'general', 'General Configuration', 'This section contains varius engine related settings',NULL, NULL, 0, 0, 1, 1),
-(2, 'game_name', 'Game Title', 'The title for your game', 'text', 'ezRPG 1.2.1', 0, 1, 1, 1),
+(2, 'game_name', 'Game Title', 'The title for your game', 'text', 'ezRPG 1.2.1.0', 0, 1, 1, 1),
 (3, 'pass_encryption', 'Password Encryption', 'Determine the type of password encryption to use for User Logins.','select', 4, 0, 1, 1, 1),
 (4, 'legacy', 'ezRPG Legacy', 'ezRPG Legacy Encryption method','option', 1, 0, 3, 1, 1),
 (5, 'pbkdf2', 'PBKDF2 Method', 'PBKDF2','option', 2, 0, 3, 1, 1),
@@ -150,7 +151,9 @@ INSERT INTO `<ezrpg>settings` (`id`, `name`, `title`, `description`, `optionscod
 (10, 'passLens', 'Password Lengths', 'Determine what lengths the password may be.', 'select', '11', 0, 7, 1, 1),
 (11, 'passMin', 'Minimum Length', '', 'option', 'min', 0, 10, 1, 1),
 (12, 'passMinMax', 'Minimum & Maximum Length', 'Check against both a Min and Max', 'option', 'minmax', 0, 10, 1, 1),
-(13, 'version', 'Game Version', '', 'text', '1.2.1.1', 0, 1, 1, 0);
+(13, 'version', 'Game Version', '', 'text', '1.2.1.0', 0, 1, 1, 0),
+(14, 'english', 'avaible language', NULL, 'language', 'english', 0, 0, 0, 1),
+(15, 'deutsch', 'avaible language', NULL, 'language', 'deutsch', 0, 0, 0, 1);
 QUERY;
 
         $db->execute($data1);

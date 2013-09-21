@@ -33,7 +33,6 @@ function hook_admin_controls(&$db, &$tpl, &$player, $args = 0)
 			}
 		}
 	}
-
     return $args;
 }
 
