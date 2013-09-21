@@ -7,7 +7,7 @@
 <meta name="Distribution" content="Global" />
 <meta name="Robots" content="index,follow" />
 
-{$THEME_NOW}	
+<link rel="stylesheet" href="../static/default/style.css" type="text/css" />	
 
 <title>{$GAMESETTINGS['game_name']['value']} :: {$TITLE|default:""}</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

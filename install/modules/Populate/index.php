@@ -29,7 +29,7 @@ class Install_Populate extends InstallerFactory
         }
 		
         $structure1 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `ezrpg_players` (
+CREATE TABLE IF NOT EXISTS `<ezrpg>players` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(30) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
@@ -49,7 +49,7 @@ QUERY;
 
 
         $structure2 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `ezrpg_players_meta` (
+CREATE TABLE IF NOT EXISTS `<ezrpg>players_meta` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `pid` int(11) unsigned NOT NULL,
   `last_active` int(11) unsigned DEFAULT '0',
@@ -76,7 +76,7 @@ QUERY;
         $db->execute($structure2);
 
         $structure3 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `ezrpg_player_log` (
+CREATE TABLE IF NOT EXISTS `<ezrpg>player_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `player` int(11) unsigned NOT NULL,
   `time` int(11) unsigned NOT NULL,
@@ -90,7 +90,7 @@ QUERY;
         $db->execute($structure3);
 
         $structure4 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `ezrpg_menu` (
+CREATE TABLE IF NOT EXISTS `<ezrpg>menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `active` int(11) NOT NULL DEFAULT '1',
   `parent_id` int(11) NOT NULL DEFAULT '0',
@@ -107,7 +107,7 @@ QUERY;
 
      
         $structure5 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `ezrpg_settings` (
+CREATE TABLE IF NOT EXISTS `<ezrpg>settings` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(120) NOT NULL,
   `title` varchar(120) NOT NULL,
@@ -125,7 +125,7 @@ QUERY;
         $db->execute($structure5);
 
         $structure6 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `ezrpg_themes` (
+CREATE TABLE IF NOT EXISTS `<ezrpg>themes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   `dir` text NOT NULL,
@@ -140,7 +140,7 @@ QUERY;
         $data1 = <<<QUERY
 INSERT INTO `<ezrpg>settings` (`id`, `name`, `title`, `description`, `optionscode`, `value`, `disporder`, `gid`, `isdefault`,`visible`) VALUES
 (1, 'general', 'General Configuration', 'This section contains varius engine related settings',NULL, NULL, 0, 0, 1, 1),
-(2, 'game_name', 'Game Title', 'The title for your game', 'text', 'ezRPG 1.2.1.0', 0, 1, 1, 1),
+(2, 'game_name', 'Game Title', 'The title for your game', 'text', 'ezRPG 1.2.1.x {UNSTABLE}', 0, 1, 1, 1),
 (3, 'pass_encryption', 'Password Encryption', 'Determine the type of password encryption to use for User Logins.','select', 4, 0, 1, 1, 1),
 (4, 'legacy', 'ezRPG Legacy', 'ezRPG Legacy Encryption method','option', 1, 0, 3, 1, 1),
 (5, 'pbkdf2', 'PBKDF2 Method', 'PBKDF2','option', 2, 0, 3, 1, 1),
@@ -152,8 +152,9 @@ INSERT INTO `<ezrpg>settings` (`id`, `name`, `title`, `description`, `optionscod
 (11, 'passMin', 'Minimum Length', '', 'option', 'min', 0, 10, 1, 1),
 (12, 'passMinMax', 'Minimum & Maximum Length', 'Check against both a Min and Max', 'option', 'minmax', 0, 10, 1, 1),
 (13, 'version', 'Game Version', '', 'text', '1.2.1.0', 0, 1, 1, 0),
-(14, 'english', 'avaible language', NULL, 'language', 'english', 0, 0, 0, 1),
-(15, 'deutsch', 'avaible language', NULL, 'language', 'deutsch', 0, 0, 0, 1);
+(14, 'languages', 'Game Language', 'Select the primary game language', NULL, NULL, 0, 0, 1, 0),
+(15, 'english', 'English', NULL, 'language', 'English', 0, 14, 0, 0),
+(16, 'deutsch', 'Deutsch', NULL, 'language', 'Deutsch', 0, 14, 0, 0);
 QUERY;
 
         $db->execute($data1);

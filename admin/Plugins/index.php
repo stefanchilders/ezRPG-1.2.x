@@ -49,7 +49,7 @@ class Admin_Plugins extends Base_Module
 
     private function list_modules()
     {
-        $query = $this->db->execute('select * from <ezrpg>plugins JOIN <ezrpg>plugins_meta ON <ezrpg>plugins.id = <ezrpg>plugins_meta.plug_id WHERE <ezrpg>plugins_meta.pm_id=0');
+        $query = $this->db->execute('select * from <ezrpg>plugins JOIN <ezrpg>plugins_meta ON <ezrpg>plugins.id = <ezrpg>plugins_meta.plug_id');
         $plugins = Array( );
         while ( $m = $this->db->fetch($query) )
         {

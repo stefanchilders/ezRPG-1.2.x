@@ -29,7 +29,7 @@ class Install_Plugins extends InstallerFactory
         }
 
         $structure1 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `ezrpg_plugins` (
+CREATE TABLE IF NOT EXISTS `<ezrpg>plugins` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '0',
@@ -46,7 +46,7 @@ QUERY;
 
 
         $structure2 = <<<QUERY
-CREATE TABLE IF NOT EXISTS `ezrpg_plugins_meta` (
+CREATE TABLE IF NOT EXISTS `<ezrpg>plugins_meta` (
   `meta_id` int(11) NOT NULL AUTO_INCREMENT,
   `plug_id` int(11) NOT NULL,
   `version` float NOT NULL,
